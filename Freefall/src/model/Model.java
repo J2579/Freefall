@@ -1,6 +1,8 @@
 package model;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class Model {
 
@@ -10,7 +12,8 @@ public class Model {
 	public static final int FIELD_HEIGHT = 400;;
 	
 	private Player player;
-	boolean leftHeld, rightHeld, upHeld, downHeld;
+	private boolean leftHeld, rightHeld, upHeld, downHeld;
+	private ArrayList<ScreenObject> sList = new ArrayList<ScreenObject>();
 	
 	public Model() {
 		player = new Player(new Vector(0, 10000, 0));
@@ -18,6 +21,28 @@ public class Model {
 		rightHeld = false;
 		upHeld = false;
 		downHeld = false;
+		
+		setupObjects();
+	}
+	
+	private void setupObjects() {
+		ScreenObject o1 = new ScreenObject(new Vector(-100,0,0));
+		ScreenObject o2 = new ScreenObject(new Vector(100,0,0));
+		ScreenObject o3 = new ScreenObject(new Vector(0,0,100));
+		ScreenObject o4 = new ScreenObject(new Vector(0,0,-100));
+		
+		o1.setColor(Color.RED);
+		o2.setColor(Color.GREEN);
+		o3.setColor(Color.BLUE);
+		
+		sList.add(o1);
+		sList.add(o2);
+		sList.add(o3);
+		sList.add(o4);
+	}
+	
+	public ArrayList<ScreenObject> getBlitList() {
+		return sList;
 	}
 	
 	public Vector getPlayerPosition() {
@@ -47,12 +72,14 @@ public class Model {
 	}
 
 	public void update() {
-		updatePlayerVector();
+		Vector change = updatePlayerVector();
 		
-		//Update everything else here
+		for(ScreenObject so: sList) {
+			so.update(change);
+		}
 	}
 	
-	public void updatePlayerVector() {
+	public Vector updatePlayerVector() {
 		
 		Vector mvt = new Vector();
 		
@@ -95,6 +122,6 @@ public class Model {
 			}	
 		}
 		
-		player.update(mvt);
+		return player.update(mvt);
 	}
 }

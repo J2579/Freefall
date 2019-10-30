@@ -6,12 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-import model.Model;
-import model.Vector;
+import model.*;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements ActionListener, KeyListener {
@@ -98,12 +98,26 @@ public class GUI extends JFrame implements ActionListener, KeyListener {
 		public void draw(Graphics g) {
 			g.setColor(Color.BLACK);
 			
-			Vector v = model.getPlayerPosition();
-		//	String s = (int)v.getX() + "," + (int)v.getY() + "," + (int)v.getZ();
-		//	g.drawString(s, 20, 100);
-		//	System.out.println(s);
+			//Person
+			g.setColor(new Color(0,255,255));
+			g.fillRect((GUI.WIDTH / 2) - 50, ((GUI.HEIGHT) / 2) - 50, 50, 50);
+	
+			//Objects
+			ArrayList<ScreenObject> list = model.getBlitList();
 			
-			g.drawRect(((int)v.getX() + (GUI.WIDTH / 2)) - 50, ((GUI.HEIGHT) / 2) - (int)v.getZ() - 50, 50, 50);
+			for(ScreenObject so: list) {
+				g.setColor(so.getColor());
+				Vector v = so.getVector();
+				g.drawRect(((int)v.getX() + (GUI.WIDTH / 2)) - 50, ((GUI.HEIGHT) / 2) - (int)v.getZ() - 50, 50, 50);
+			}
+			
+			//Minimap
+			g.setColor(Color.WHITE);
+			g.fillRect(-5, GUI.HEIGHT-145, 110, 110);
+			g.setColor(Color.BLACK);
+			g.drawRect(-5, GUI.HEIGHT-145, 110, 110);
+			String s = (int)model.getPlayerPosition().getX() + "," + (int)model.getPlayerPosition().getY() + "," + (int)model.getPlayerPosition().getZ();
+			g.drawString(s, 10, 420);
 		}
 	}
 }

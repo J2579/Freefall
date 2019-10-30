@@ -11,7 +11,7 @@ public class Player extends ScreenObject {
 	
 
 	@Override
-	public void update(Vector vector) {
+	public Vector update(Vector vector) {
 		
 		Vector position = super.getVector();
 		
@@ -23,5 +23,7 @@ public class Player extends ScreenObject {
 			vector.setZ(0);
 		
 		super.update(vector);
+		
+		return vector;
 	}
 }
